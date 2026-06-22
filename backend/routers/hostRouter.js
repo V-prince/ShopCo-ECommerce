@@ -1,6 +1,6 @@
 const express = require('express');
 const hostController = require('../controllers/hostController');
-const { Auth } = require('../Middleware/authMiddlewear');
+const { Auth } = require('../middleware/authMiddlewear');
 const hostRouter = express.Router();
 
 hostRouter.post('/add-product',Auth,hostController.addProduct);
