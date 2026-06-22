@@ -3,7 +3,7 @@
 
 export const HostAddDataTOServer = async (formData) => {
     const token = localStorage.getItem("token");
-    const res = await fetch('http://localhost:5000/api/host/add-product', {
+    const res = await fetch('https://shopco-ecommerce-yael.onrender.com/api/host/add-product', {
         method: 'POST',
         headers: {
             authorization: token
@@ -16,13 +16,13 @@ export const HostAddDataTOServer = async (formData) => {
 
 
 export const AllDataComesFromServer = async () => {
-    const res = await fetch('http://localhost:5000/api/products')
+    const res = await fetch('https://shopco-ecommerce-yael.onrender.com/api/products')
     const data = await res.json();
     return data
 }
 
 export const FetchOneDataFromServer = async (id) => {
-    const res = await fetch(`http://localhost:5000/api/products/${id}`);
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/products/${id}`);
     const result = await res.json();
     console.log("result:", result)
     const data = {
@@ -44,7 +44,7 @@ export const PostAddCartDataToServer = async (cartData) => {
 
     const token = localStorage.getItem("token");
 
-    const res = await fetch(`http://localhost:5000/api/products/cart`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/products/cart`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export const PostAddCartDataToServer = async (cartData) => {
 
 export const FetchallCartsDataFormServer = async () => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/api/products/carts`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/products/carts`, {
         headers: {
             authorization: token
         }
@@ -85,7 +85,7 @@ export const FetchallCartsDataFormServer = async () => {
 
 export const DeleteItemFromServer = async (id) => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/api/products/cart/delete/${id}`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/products/cart/delete/${id}`, {
         method: "DELETE",
         headers: {
             authorization: token
@@ -97,7 +97,7 @@ export const DeleteItemFromServer = async (id) => {
 
 export const IncrementAndDecrementCounterFromCart = async (id, newcounter) => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/api/products/cart/quantity/${id}`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/products/cart/quantity/${id}`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -110,7 +110,7 @@ export const IncrementAndDecrementCounterFromCart = async (id, newcounter) => {
 }
 
 export const SignupPageDataSendToServer = async (signupData) => {
-    const res = await fetch(`http://localhost:5000/api/signup`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/signup`, {
         method: "post",
         headers: {
             "Content-Type": "application/json"
@@ -122,7 +122,7 @@ export const SignupPageDataSendToServer = async (signupData) => {
 }
 
 export const LoginPageDataSendToServer = async (LoginData) => {
-    const res = await fetch(`http://localhost:5000/api/login`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/login`, {
         method: "post",
         headers: {
             "Content-Type": "application/json"
@@ -135,7 +135,7 @@ export const LoginPageDataSendToServer = async (LoginData) => {
 }
 
 export const verifyOtpForLogin = async (email, otp) => {
-    const res = await fetch(`http://localhost:5000/api/verify/otp`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/verify/otp`, {
         method: "post",
         headers: {
             "Content-Type": "application/json"
@@ -150,7 +150,7 @@ export const verifyOtpForLogin = async (email, otp) => {
 
 export const HosteditDataToServer = async (id, editedData) => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/api/host/edit/${id}`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/host/edit/${id}`, {
         method: "PUT",
         headers: {
             authorization: token,
@@ -163,7 +163,7 @@ export const HosteditDataToServer = async (id, editedData) => {
 
 export const HostDeleteDataFromServer = async (id) => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/api/host/delete/${id}`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/host/delete/${id}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -179,7 +179,7 @@ export const HostDeleteDataFromServer = async (id) => {
 export const FetchAllMyProducts = async (filter) => {
 
     const token = localStorage.getItem("token")
-    const res = await fetch(`http://localhost:5000/api/host/myproducts?filter=${filter}`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/host/myproducts?filter=${filter}`, {
         headers: {
             authorization: token,
         }
@@ -192,7 +192,7 @@ export const FetchAllMyProducts = async (filter) => {
 
 export const FetchHostOrders = async () => {
     const token = localStorage.getItem("token")
-    const res = await fetch(`http://localhost:5000/api/host/orders`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/host/orders`, {
         headers: {
             authorization: token,
         }
@@ -203,7 +203,7 @@ export const FetchHostOrders = async () => {
 
 export const UpdateStatusOnServer = async (orderId, newStatus) => {
     const token = localStorage.getItem("token")
-    const res = await fetch(`http://localhost:5000/api/host/orders/${orderId}/status`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/host/orders/${orderId}/status`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -217,7 +217,7 @@ export const UpdateStatusOnServer = async (orderId, newStatus) => {
 
 export const razorpayCreateOrder = async () => {
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/api/products/razorpay/order/create`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/products/razorpay/order/create`, {
         headers: {
             authorization: token,
         },
@@ -230,7 +230,7 @@ export const razorpayCreateOrder = async () => {
 export const razorpayVerifyPayment = async (orderData) => {
     console.log("OrderData", orderData);
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/api/products/razorpay/verify/payment`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/products/razorpay/verify/payment`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -244,7 +244,7 @@ export const razorpayVerifyPayment = async (orderData) => {
 
 export const getUserOrders = async () => {
     const token = localStorage.getItem("token")
-    const res = await fetch(`http://localhost:5000/api/user/orders/myorders`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/user/orders/myorders`, {
         headers: {
             authorization: token,
         }
@@ -255,7 +255,7 @@ export const getUserOrders = async () => {
 }
 
 export const sentEmailForForgotPassword = async (email) => {
-    const res = await fetch(`http://localhost:5000/api/auth/forgotpassword`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/auth/forgotpassword`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -268,7 +268,7 @@ export const sentEmailForForgotPassword = async (email) => {
 
 export const verifyOtpForForgotPassword = async (email, otp) => {
 
-    const res = await fetch(`http://localhost:5000/api/auth/verifyotp`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/auth/verifyotp`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -281,7 +281,7 @@ export const verifyOtpForForgotPassword = async (email, otp) => {
 
 export const sendNewPassword = async (email, newPassword) => {
 
-    const res = await fetch(`http://localhost:5000/api/auth/newpassword`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/auth/newpassword`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -295,7 +295,7 @@ export const sendNewPassword = async (email, newPassword) => {
 
 export const FetchAnaliticsData = async () => {
     const token = localStorage.getItem("token")
-    const res = await fetch(`http://localhost:5000/api/host/analytics`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/host/analytics`, {
         headers: {
             authorization: token,
         }
@@ -307,7 +307,7 @@ export const FetchAnaliticsData = async () => {
 
 export const postAddRatingToDataBase = async (ratingData) => {
     const token = localStorage.getItem("token")
-    const res = await fetch('http://localhost:5000/api/rating/add/comment', {
+    const res = await fetch('https://shopco-ecommerce-yael.onrender.com/api/rating/add/comment', {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -321,7 +321,7 @@ export const postAddRatingToDataBase = async (ratingData) => {
 
 export const getAllRatingsFromServer = async (id, filter) => {
     const token = localStorage.getItem("token")
-    const res = await fetch(`http://localhost:5000/api/rating/v1/show/${id}?filter=${filter}`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/rating/v1/show/${id}?filter=${filter}`, {
         headers: {
             authorization: token,
         },
@@ -334,7 +334,7 @@ export const getAllRatingsFromServer = async (id, filter) => {
 
 export const  SearchProducts = async (search) => {
     const token = localStorage.getItem("token")
-    const res = await fetch(`http://localhost:5000/api/products/search/?search=${search}`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/products/search/?search=${search}`, {
         headers: {
             authorization: token,
         }
@@ -345,7 +345,7 @@ export const  SearchProducts = async (search) => {
 
 export const CancleOrderApI = async (id) => {
     const token = localStorage.getItem("token")
-    const res = await fetch(`http://localhost:5000/api/products/order/cancle/${id}`, {
+    const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/products/order/cancle/${id}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
