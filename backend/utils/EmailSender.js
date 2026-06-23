@@ -1,37 +1,26 @@
-const nodemailer = require("nodemailer");
+const Brevo = require('@getbrevo/brevo');
 
-const transporter = nodemailer.createTransport({
-    host: "smtp-relay.brevo.com",
-    port: 587,
-    secure: false,
-    auth: {
-        user: process.env.BREVO_USER,
-        pass: process.env.BREVO_PASS,
-    }
-});
+// Initialize the API client
+const apiInstance = new Brevo.TransactionalEmailsApi();
 
-transporter.verify((error, success) => {
-  if (error) {
-    console.log("SMTP Error:", error);
-  } else {
-    console.log("SMTP Server is Ready");
-  }
-});
+// Configure API key authorization
+const apiKey = apiInstance.authentications['apiKey'];
+apiKey.apiKey = process.env.BREVO_API_KEY; // Use your Brevo API key here
 
 const EmailSender = async (to, sub, content) => {
     try {
+        const sendSmtpEmail = new Brevo.SendSmtpEmail();
 
-        await transporter.sendMail({
-            from: `"Shop.Co" <${process.env.BREVO_USER}>`,
-            to,
-            subject: sub,
-            html: content
-        });
+        sendSmtpEmail.subject = sub;
+        sendSmtpEmail.htmlContent = content;
+        sendSmtpEmail.sender = { name: "Shop.Co", email: process.env.BREVO_USER };
+        sendSmtpEmail.to = [{ email: to }];
 
-        console.log("Email sent");
+        const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+        console.log("Email sent successfully via API. Message ID:", data.body.messageId);
 
     } catch (error) {
-        console.error("Error sending email:", error);
+        console.error("Error sending email via Brevo API:", error);
         throw new Error("Failed to send email");
     }
 };
