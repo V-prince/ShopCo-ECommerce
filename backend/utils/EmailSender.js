@@ -5,7 +5,7 @@ const apiInstance = new Brevo.TransactionalEmailsApi();
 
 // Configure API key authorization
 const apiKey = apiInstance.authentications['apiKey'];
-apiKey.apiKey = process.env.BREVO_API_KEY; // Use your Brevo API key here
+apiKey.apiKey = process.env.BREVO_PASS; // Use your Brevo API key here
 
 const EmailSender = async (to, sub, content) => {
     try {
