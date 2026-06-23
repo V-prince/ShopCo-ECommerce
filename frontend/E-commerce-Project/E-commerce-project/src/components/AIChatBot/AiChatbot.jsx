@@ -36,6 +36,11 @@ const AIChatBot = () => {
       SetLoading(true)
       const data = await GeminiAiChatBot(userMessage)
       console.log("data", data)
+
+      if(!data.success){
+        return console.log("messageAI",data.message)
+      }
+      
       setMessages((prev) => [
         ...prev,
         {

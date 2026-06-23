@@ -13,6 +13,7 @@ const EmailSender = async (to, sub, content) => {
             subject: sub,
             html: content,
         })
+        console.log("RESEND_API_KEY exists:", !!process.env.RESEND_API_KEY);
 
         console.log("Email sent");
 

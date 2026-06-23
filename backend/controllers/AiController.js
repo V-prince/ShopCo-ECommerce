@@ -1,6 +1,8 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { extractProductId, getProductById } = require("../utils/AIChatbot/extractProductId");
 
+console.log("Gemini Key:", process.env.GEMINI_API_KEY?.slice(0, 10));
+
 const genAI = new GoogleGenerativeAI(
   process.env.GEMINI_API_KEY,
 )
@@ -9,8 +11,9 @@ exports.chatwithAi = async (req, res) => {
   try {
 
     const message = req.body.message;
-
     const lowerMsg = message.toLowerCase()
+    console.log("message:", message);
+    
     if (lowerMsg.includes("refund")) {
       return res.status(200).json({
         success: true,
