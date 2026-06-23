@@ -12,7 +12,6 @@ exports.chatwithAi = async (req, res) => {
 
     const message = req.body.message;
     const lowerMsg = message.toLowerCase()
-    console.log("message:", message);
     
     if (lowerMsg.includes("refund")) {
       return res.status(200).json({

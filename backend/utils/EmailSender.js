@@ -1,19 +1,25 @@
 const nodemailer = require("nodemailer");
-const { Resend } = require("resend");
 
-const resend = new Resend(process.env.RESEND_EMAIL_API_KEY)
+const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+        user: process.env.EMAIL_HOST,
+        pass: process.env.EMAIL_PASSWORD,
+    }
+});
 
 
 const EmailSender = async (to, sub, content) => {
     try {
 
-        await resend.emails.send({
-            from: "onboarding@resend.dev",
+        await transporter.sendMail({
+            from: `"Shop.Co" <${process.env.EMAIL_HOST}>`,
             to,
             subject: sub,
-            html: content,
-        })
-        console.log("RESEND_API_KEY exists:", !!process.env.RESEND_API_KEY);
+            html: content
+        });
 
         console.log("Email sent");
 
