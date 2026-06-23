@@ -15,7 +15,7 @@ const EmailSender = async (to, sub, content) => {
     try {
 
         await transporter.sendMail({
-            from: `"Shop.Co" <${process.env.EMAIL_HOST}>`,
+            from: `"Shop.Co" <${process.env.BREVO_USER}>`,
             to,
             subject: sub,
             html: content
