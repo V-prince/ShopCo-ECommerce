@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ShopAction } from "../store/Shope";
 import { ShopItemsAction } from "../store/Shopitem";
 import { Loading } from "../components/Loading"
+import { motion } from "framer-motion";
 
 export const Checkout = () => {
 
@@ -183,7 +184,12 @@ export const Checkout = () => {
 
     return (
 
-        <section className="min-h-screen bg-[#f5f5f5] py-30 px-5">
+        <motion.section
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="min-h-screen bg-[#f5f5f5] py-30 px-5"
+        >
 
             <div className="max-w-[1400px] mx-auto">
 
@@ -496,7 +502,7 @@ export const Checkout = () => {
 
             </div>
 
-        </section>
+        </motion.section>
 
     );
 

@@ -10,6 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ShopAction } from "../store/Shope";
 import { FetchOneDataFromServer, getAllRatingsFromServer, PostAddCartDataToServer, postAddRatingToDataBase } from "../services/api";
 import { motion } from "framer-motion";
+import { Loading } from "./Loading";
 
 export const Shop = () => {
 
@@ -140,9 +141,7 @@ export const Shop = () => {
 
     if (!fetchedItem) {
         return (
-            <p className="mt-40 text-center text-2xl font-bold">
-                Loading product...
-            </p>
+            <Loading/>
         );
     }
 
