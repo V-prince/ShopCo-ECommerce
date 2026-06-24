@@ -238,7 +238,7 @@ exports.CreateLoginPage = async (req, res, next) => {
     await EmailSender(user.email, "Password Verification Otp", LoginVerificationTemplate);
     await user.save();
 
-    res.status(200).json({ success: true, message: `${email} is Logged in Sucessfully` });
+    res.status(200).json({ success: true, message: `OTP is send to ${email}` });
 }
 
 exports.verifyOtpForLogin = async (req, res) => {
@@ -279,7 +279,7 @@ exports.verifyOtpForLogin = async (req, res) => {
 
 exports.getMyOrders = async (req, res) => {
     try {
-        const orders = await Order.find({ userId: req.user.id }).populate("products.productId").sort({"createdAt":-1})
+        const orders = await Order.find({ userId: req.user.id }).populate("products.productId").sort({ "createdAt": -1 })
         res.status(200).json({ success: true, orders })
     }
     catch (error) {
