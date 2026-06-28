@@ -371,7 +371,7 @@ exports.generateInvoice = async (req, res) => {
 
 
     doc.fontSize(12).font('Helvetica')
-      .text(`Payment Status: ${order.paymentStatus?.paymentStatus || 'N/A'}`, { align: 'right' })
+      .text(`Payment Status: ${order?.paymentStatus || 'N/A'}`, { align: 'right' })
       .text(`Order Status: ${order.orderStatus}`, { align: 'right' })
 
     doc.moveDown(2)
