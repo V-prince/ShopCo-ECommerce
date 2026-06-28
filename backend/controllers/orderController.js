@@ -321,13 +321,13 @@ exports.generateInvoice = async (req, res) => {
 
     res.set({
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename=invoice-${order._id}.pdf`,
+      "Content-Disposition": `attachment; filename=Shopco-invoice-${order._id}.pdf`,
     })
 
     doc.pipe(res)
 
-    
-    doc.fontSize(26).font('Helvetica-Bold').text('INVOICE', { align: 'center' })
+
+    doc.fontSize(26).font('Helvetica-Bold').text('ShopCo-INVOICE', { align: 'center' })
     doc.moveDown()
     doc.fontSize(12).font('Helvetica')
       .text(`Invoice ID: ${order._id}`, { align: 'right' })
@@ -337,7 +337,7 @@ exports.generateInvoice = async (req, res) => {
     doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke()
     doc.moveDown()
 
-    
+
     doc.fontSize(14).font('Helvetica-Bold').text('Customer Details:')
     doc.fontSize(12).font('Helvetica')
       .text(`Name: ${order.userId.name}`)
@@ -348,14 +348,14 @@ exports.generateInvoice = async (req, res) => {
     doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke()
     doc.moveDown()
 
-   
+
     doc.fontSize(14).font('Helvetica-Bold').text('Order Items:')
     doc.moveDown(0.5)
 
     order.products.forEach((item, index) => {
       doc.fontSize(12).font('Helvetica')
         .text(`${index + 1}. ${item.title}`)
-        .text(`Quantity: ${item.quantity}   Price: ₹${item.price}`, { indent: 20 })
+        .text(`Quantity: ${item.quantity}   Price: ${item.price}`, { indent: 20 })
       doc.moveDown(0.3)
     })
 
@@ -363,13 +363,13 @@ exports.generateInvoice = async (req, res) => {
     doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke()
     doc.moveDown()
 
-  
+
     doc.fontSize(14).font('Helvetica-Bold')
-      .text(`Total Amount: ₹${order.finalAmount}`, { align: 'right' })
+      .text(`Total Amount: ${order.finalAmount}`, { align: 'right' })
 
     doc.moveDown()
 
-   
+
     doc.fontSize(12).font('Helvetica')
       .text(`Payment Status: ${order.paymentStatus?.paymentStatus || 'N/A'}`, { align: 'right' })
       .text(`Order Status: ${order.orderStatus}`, { align: 'right' })
