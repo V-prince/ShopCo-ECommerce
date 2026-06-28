@@ -62,7 +62,7 @@ function App() {
         },
         {
           path: "/profile",
-          element: <RouterProtection><MainProfile /></RouterProtection>
+          element: <RouterProtection allowedRoles={["user","host"]}><MainProfile /></RouterProtection>
         },
         {
           path: "/shop-items/:id",
@@ -70,7 +70,7 @@ function App() {
         },
         {
           path: "/carts",
-          element: <RouterProtection><Carts /></RouterProtection>
+          element: <RouterProtection allowedRoles={["user","host"]}><Carts /></RouterProtection>
         },
         {
           path: "/carts/:id",
@@ -78,11 +78,11 @@ function App() {
         },
         {
           path: "/host",
-          element: <RouterProtection><HostDashboard /></RouterProtection>
+          element: <RouterProtection  allowedRoles={["host"]}><HostDashboard /></RouterProtection>
         },
         {
           path: "/myproducts",
-          element: <RouterProtection><MyProducts /></RouterProtection>
+          element: <RouterProtection allowedRoles={["host"]}><MyProducts /></RouterProtection>
         },
         {
           path: "/new/arrivals",
@@ -91,20 +91,20 @@ function App() {
         ,
         {
           path: "/host/edit/:id",
-          element: <RouterProtection><HostDashboard /></RouterProtection>
+          element: <RouterProtection  allowedRoles={["host"]}><HostDashboard /></RouterProtection>
         },
 
         {
           path: "/checkout",
-          element: <RouterProtection><Checkout/></RouterProtection>
+          element: <RouterProtection allowedRoles={["user","host"]}><Checkout/></RouterProtection>
         },
         {
           path: "/host/order",
-          element: <RouterProtection><HostOrders/></RouterProtection>
+          element: <RouterProtection  allowedRoles={["host"]}><HostOrders/></RouterProtection>
         },
         {
           path: "/user/myorders",
-          element: <RouterProtection><MyOrders /></RouterProtection>
+          element: <RouterProtection allowedRoles={["user","host"]}><MyOrders /></RouterProtection>
         },
         {
           path: "/auth/login/forgotpassword",

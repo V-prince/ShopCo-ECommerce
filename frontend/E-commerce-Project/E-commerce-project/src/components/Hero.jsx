@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-
+import { Link } from "react-router-dom"
 export const Hero = () => {
+    const MotionLink = motion(Link);
     return (
         <section className=' bg-zinc-200 md:mt-21 mt-16'>
             <div className='max-w-[1400px] mx-auto px-10 flex md:flex-row flex-col items-center'>
@@ -17,16 +18,17 @@ export const Hero = () => {
                         transition={{ delay: 0.4, duration: 0.8 }}
 
                         className='t text-zinc-400 mt-4 mb-5  max-w-[400px] md:my-5'>Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality and cater to your sense of style.</motion.p>
-                    <motion.button
+                    <MotionLink
+                        to="/all-items"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.7 }}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className='bg-black text-white md:px-12 md:py-3 py-3 md:w-[12vw] w-full rounded-full mb-15'
+                        className="bg-black text-white md:px-12 md:py-3 py-3 md:w-[12vw] w-full rounded-full mb-15 flex justify-center items-center"
                     >
                         Shop Now
-                    </motion.button>
+                    </MotionLink>
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}

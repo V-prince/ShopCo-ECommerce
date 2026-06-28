@@ -300,7 +300,7 @@ export const Shop = () => {
                                     className="bg-white border border-zinc-200 rounded-2xl p-5 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between min-h-[280px]"
                                 >
                                     <div>
-                                        {/* User Info */}
+                                        {/*  Info */}
                                         <div className="flex items-center gap-3">
                                             <img
                                                 src={
@@ -326,7 +326,7 @@ export const Shop = () => {
                                             </div>
                                         </div>
 
-                                        {/* Rating */}
+                                      
                                         <div className="flex items-center gap-1 text-yellow-400 mt-4">
                                             {Array.from(
                                                 { length: Math.floor(review.rating) },
@@ -336,13 +336,13 @@ export const Shop = () => {
                                             )}
                                         </div>
 
-                                        {/* Comment */}
+                                  
                                         <p className="text-zinc-700 mt-4 leading-relaxed break-words">
                                             {review.comment}
                                         </p>
                                     </div>
 
-                                    {/* Date */}
+                                    
                                     <div className="mt-5 text-sm text-zinc-500">
                                         {new Date(review.createdAt).toLocaleDateString("en-IN", {
                                             day: "numeric",
