@@ -10,7 +10,32 @@ const hostOrderTemplate = require("../utils/EmailTemplates/hostEmailTemplate");
 const InovoiceTemplate = require("../utils/InovoiceTemplete/inovoiceTemplate");
 const puppeteer = require("puppeteer");
 const hostOrderCancelledTemplate = require("../utils/EmailTemplates/hostOrderCancelledTemplate");
-const htmlPdf = require('html-pdf-node')
+const puppeteer = require('puppeteer')
+const path = require('path')
+const os = require('os')
+
+
+const getChromePath = () => {
+  // Render.com path
+  if (process.env.RENDER) {
+    return '/opt/render/.cache/puppeteer/chrome/linux-149.0.7827.22/chrome-linux64/chrome'
+  }
+  // Linux
+  if (os.platform() === 'linux') {
+    return '/usr/bin/google-chrome-stable'
+  }
+  // Windows localhost
+  if (os.platform() === 'win32') {
+    return 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+  }
+  // Mac localhost
+  if (os.platform() === 'darwin') {
+    return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+  }
+  // Default - puppeteer auto find karse
+  return undefined
+}
+
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_API_KEY_ID,
@@ -306,28 +331,58 @@ exports.VerifyPayment = async (req, res) => {
 
 
 
+
+
 exports.generateInvoice = async (req, res) => {
+  let browser = null
   try {
     const orderId = req.params.orderId
     const order = await Order.findById(orderId).populate("userId", "name email phoneNo")
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: "Order not found" })
+    }
+
     const htmlContent = InovoiceTemplate(order)
+    const chromePath = getChromePath()
 
-    const file = { content: htmlContent }
-    const options = { format: 'A4', printBackground: true }
+    console.log("Platform:", os.platform())
+    console.log("Chrome path:", chromePath)
 
-    const pdfBuffer = await htmlPdf.generatePdf(file, options)
+    browser = await puppeteer.launch({
+      headless: "new",
+      executablePath: chromePath,
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+        "--disable-extensions",
+        "--single-process",
+      ],
+    })
+
+    const page = await browser.newPage()
+    await page.setContent(htmlContent, { waitUntil: "networkidle0" })
+
+    const pdf = await page.pdf({
+      format: "A4",
+      printBackground: true,
+    })
 
     res.set({
       "Content-Type": "application/pdf",
-      "Content-Length": pdfBuffer.length,
+      "Content-Length": pdf.length,
       "Content-Disposition": `attachment; filename=invoice-${order._id}.pdf`,
     })
 
-    res.send(pdfBuffer)
+    res.send(pdf)
 
   } catch (err) {
-    console.error("Invoice error:", err)
+    console.error("Invoice error:", err.message)
     res.status(500).json({ success: false, message: err.message })
+  } finally {
+    if (browser) await browser.close() // ✅ always close browser
   }
 }
 
