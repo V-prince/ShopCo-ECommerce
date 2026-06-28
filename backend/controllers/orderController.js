@@ -8,33 +8,8 @@ const orderSuccessTemplate = require("../utils/EmailTemplates/orderSuccessTempla
 const User = require("../models/User");
 const hostOrderTemplate = require("../utils/EmailTemplates/hostEmailTemplate");
 const InovoiceTemplate = require("../utils/InovoiceTemplete/inovoiceTemplate");
-const puppeteer = require("puppeteer");
 const hostOrderCancelledTemplate = require("../utils/EmailTemplates/hostOrderCancelledTemplate");
-const puppeteer = require('puppeteer')
-const path = require('path')
-const os = require('os')
-
-
-const getChromePath = () => {
-  // Render.com path
-  if (process.env.RENDER) {
-    return '/opt/render/.cache/puppeteer/chrome/linux-149.0.7827.22/chrome-linux64/chrome'
-  }
-  // Linux
-  if (os.platform() === 'linux') {
-    return '/usr/bin/google-chrome-stable'
-  }
-  // Windows localhost
-  if (os.platform() === 'win32') {
-    return 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
-  }
-  // Mac localhost
-  if (os.platform() === 'darwin') {
-    return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-  }
-  // Default - puppeteer auto find karse
-  return undefined
-}
+const PDFDocument = require('pdfkit')
 
 
 const razorpay = new Razorpay({
@@ -334,7 +309,6 @@ exports.VerifyPayment = async (req, res) => {
 
 
 exports.generateInvoice = async (req, res) => {
-  let browser = null
   try {
     const orderId = req.params.orderId
     const order = await Order.findById(orderId).populate("userId", "name email phoneNo")
@@ -343,46 +317,72 @@ exports.generateInvoice = async (req, res) => {
       return res.status(404).json({ success: false, message: "Order not found" })
     }
 
-    const htmlContent = InovoiceTemplate(order)
-    const chromePath = getChromePath()
-
-    console.log("Platform:", os.platform())
-    console.log("Chrome path:", chromePath)
-
-    browser = await puppeteer.launch({
-      headless: "new",
-      executablePath: chromePath,
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-gpu",
-        "--disable-extensions",
-        "--single-process",
-      ],
-    })
-
-    const page = await browser.newPage()
-    await page.setContent(htmlContent, { waitUntil: "networkidle0" })
-
-    const pdf = await page.pdf({
-      format: "A4",
-      printBackground: true,
-    })
+    const doc = new PDFDocument({ margin: 50 })
 
     res.set({
       "Content-Type": "application/pdf",
-      "Content-Length": pdf.length,
       "Content-Disposition": `attachment; filename=invoice-${order._id}.pdf`,
     })
 
-    res.send(pdf)
+    doc.pipe(res)
+
+    
+    doc.fontSize(26).font('Helvetica-Bold').text('INVOICE', { align: 'center' })
+    doc.moveDown()
+    doc.fontSize(12).font('Helvetica')
+      .text(`Invoice ID: ${order._id}`, { align: 'right' })
+      .text(`Date: ${new Date(order.createdAt).toLocaleDateString()}`, { align: 'right' })
+
+    doc.moveDown()
+    doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke()
+    doc.moveDown()
+
+    
+    doc.fontSize(14).font('Helvetica-Bold').text('Customer Details:')
+    doc.fontSize(12).font('Helvetica')
+      .text(`Name: ${order.userId.name}`)
+      .text(`Email: ${order.userId.email}`)
+      .text(`Phone: ${order.userId.phoneNo}`)
+
+    doc.moveDown()
+    doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke()
+    doc.moveDown()
+
+   
+    doc.fontSize(14).font('Helvetica-Bold').text('Order Items:')
+    doc.moveDown(0.5)
+
+    order.orderItems.forEach((item, index) => {
+      doc.fontSize(12).font('Helvetica')
+        .text(`${index + 1}. ${item.name}`)
+        .text(`   Quantity: ${item.quantity}   Price: ₹${item.price}`, { indent: 20 })
+      doc.moveDown(0.3)
+    })
+
+    doc.moveDown()
+    doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke()
+    doc.moveDown()
+
+  
+    doc.fontSize(14).font('Helvetica-Bold')
+      .text(`Total Amount: ₹${order.totalPrice}`, { align: 'right' })
+
+    doc.moveDown()
+
+   
+    doc.fontSize(12).font('Helvetica')
+      .text(`Payment Status: ${order.paymentInfo?.status || 'N/A'}`, { align: 'right' })
+      .text(`Order Status: ${order.orderStatus}`, { align: 'right' })
+
+    doc.moveDown(2)
+    doc.fontSize(10).font('Helvetica')
+      .text('Thank you for shopping with ShopCo!', { align: 'center' })
+
+    doc.end()
 
   } catch (err) {
     console.error("Invoice error:", err.message)
     res.status(500).json({ success: false, message: err.message })
-  } finally {
-    if (browser) await browser.close() // ✅ always close browser
   }
 }
 
