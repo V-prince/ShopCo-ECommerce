@@ -1,11 +1,17 @@
 const { Schema, default: mongoose } = require("mongoose")
 const Product = require("../models/Product")
 const Rating = require("../models/Rating")
+const { fillAndStroke } = require("pdfkit")
+
 exports.postAddRatings = async (req, res) => {
   try {
     const { productId, rating, comment } = req.body
 
     const existingRating = await Rating.findOne({ userId: req.user.id, productId })
+
+    if(existingRating) {
+      return res.status(409).json({ success: false, message: "You already rated this product" })
+    }
 
     await Rating.create({
       userId: req.user.id,
@@ -14,12 +20,11 @@ exports.postAddRatings = async (req, res) => {
       comment
     })
 
-    const avgRatings = await Rating.aggregate([
 
+    const avgRatings = await Rating.aggregate([
       {
         $match: {
           productId: new mongoose.Types.ObjectId(productId)
-
         }
       }
       ,
@@ -31,8 +36,8 @@ exports.postAddRatings = async (req, res) => {
       }
     ])
 
-    await Product.findByIdAndUpdate(productId,{
-      avgRatings:avgRatings[0]?.avgRating || 0
+    await Product.findByIdAndUpdate(productId, {
+      avgRatings: avgRatings[0]?.avgRating || 0
     })
 
     res.status(200).json({ success: true, message: "Rating created sucessfully " })

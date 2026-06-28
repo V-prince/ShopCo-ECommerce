@@ -29,8 +29,7 @@ export const Shop = () => {
     let [showreview, setshowreview] = useState([])
     let [sort, setsort] = useState("latest")
     let [fetchedItem, setfetchedItem] = useState(null)
-
-
+    const [loading, setLoading] = useState(false)
 
 
     const sendcart = async (fetchedItem) => {
@@ -90,33 +89,45 @@ export const Shop = () => {
 
     const handleonclick = async (e) => {
         e.preventDefault();
-        if (!inrating) {
-            toast.error("Please Enter Rating")
-            return
+        if (loading) return;
+        try {
+
+            if (!inrating) {
+                toast.error("Please Enter Rating")
+                return
+            }
+            if (!textarea) {
+                toast.error("Please Enter Comment")
+                return
+            }
+
+            const ratingData = {
+                productId: id,
+                rating: inrating,
+                comment: textarea
+            }
+
+
+
+            const data = await postAddRatingToDataBase(ratingData)
+            console.log(data)
+
+            if (!data.success) {
+                return toast.error(data.message)
+            }
+            
+            setinrating(0)
+
+            settextarea("")
+            setshowraing(false)
+            setLoading(true)
+
+            await getAllRatings();
+
+        } finally {
+            setLoading(false)
         }
-        if (!textarea) {
-            toast.error("Please Enter Comment")
-            return
-        }
 
-        const ratingData = {
-            productId: id,
-            rating: inrating,
-            comment: textarea
-        }
-
-        const data = await postAddRatingToDataBase(ratingData)
-
-        if (!data.success) {
-            return toast.error(data.message)
-        }
-
-        await getAllRatings();
-
-        setinrating(0)
-
-        settextarea("")
-        setshowraing(false)
     }
 
 
@@ -141,7 +152,7 @@ export const Shop = () => {
 
     if (!fetchedItem) {
         return (
-            <Loading/>
+            <Loading />
         );
     }
 
@@ -326,7 +337,7 @@ export const Shop = () => {
                                             </div>
                                         </div>
 
-                                      
+
                                         <div className="flex items-center gap-1 text-yellow-400 mt-4">
                                             {Array.from(
                                                 { length: Math.floor(review.rating) },
@@ -336,13 +347,13 @@ export const Shop = () => {
                                             )}
                                         </div>
 
-                                  
+
                                         <p className="text-zinc-700 mt-4 leading-relaxed break-words">
                                             {review.comment}
                                         </p>
                                     </div>
 
-                                    
+
                                     <div className="mt-5 text-sm text-zinc-500">
                                         {new Date(review.createdAt).toLocaleDateString("en-IN", {
                                             day: "numeric",
@@ -444,11 +455,11 @@ export const Shop = () => {
 
                             <button
                                 type="submit"
-                                onClick={handleonclick}
-                                className="bg-black text-white font-bold px-8 py-3 rounded-2xl
-            hover:scale-105 hover:bg-zinc-800 transition-all duration-200 shadow-lg"
+                                disabled={loading ? true : false}
+                                className={`bg-black text-white font-bold px-8 py-3 rounded-2xl
+            hover:scale-105 hover:bg-zinc-800 transition-all duration-200 shadow-lg ${loading?"cursor-progress opacity-70":"cursor-pointer"}`}
                             >
-                                Submit Review
+                                {loading ? "Submitting..." : "Submit Review"}
                             </button>
 
                         </div>
