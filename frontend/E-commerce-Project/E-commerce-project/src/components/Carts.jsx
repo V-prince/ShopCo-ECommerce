@@ -1,7 +1,7 @@
 import { Headings } from './Headings';
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useDispatch } from 'react-redux';
-import { Cartcard } from './cartcard';
+import { Cartcard } from './Cartcard';
 import { ShopAction } from '../store/Shope';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
