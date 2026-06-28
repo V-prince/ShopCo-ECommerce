@@ -80,7 +80,7 @@ export const Carts = () => {
             ) : product.length !== 0 ? (
                 <div className="flex md:flex-row flex-col gap-5">
 
-                    
+
                     <div className="flex flex-col border rounded-3xl border-zinc-500 w-full md:w-[50vw] p-5">
                         {product.map((item, index) => (
                             <motion.div
@@ -100,7 +100,7 @@ export const Carts = () => {
                         ))}
                     </div>
 
-                   
+
                     <motion.div
                         initial={{ opacity: 0, x: 40 }}
                         animate={{ opacity: 1, x: 0 }}
