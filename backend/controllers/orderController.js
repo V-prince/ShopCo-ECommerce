@@ -10,7 +10,7 @@ const hostOrderTemplate = require("../utils/EmailTemplates/hostEmailTemplate");
 const InovoiceTemplate = require("../utils/InovoiceTemplete/inovoiceTemplate");
 const puppeteer = require("puppeteer");
 const hostOrderCancelledTemplate = require("../utils/EmailTemplates/hostOrderCancelledTemplate");
-
+const htmlPdf = require('html-pdf-node')
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_API_KEY_ID,
@@ -309,41 +309,25 @@ exports.VerifyPayment = async (req, res) => {
 exports.generateInvoice = async (req, res) => {
   try {
     const orderId = req.params.orderId
-    console.log("orderId", orderId)
-
     const order = await Order.findById(orderId).populate("userId", "name email phoneNo")
-
     const htmlContent = InovoiceTemplate(order)
 
-    const browser = await puppeteer.launch({
-      headless: "new",
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-gpu",
-      ],
-    })
-    const page = await browser.newPage()
+    const file = { content: htmlContent }
+    const options = { format: 'A4', printBackground: true }
 
-    await page.setContent(htmlContent, { waitUntil: "networkidle0" })
-
-    const pdf = await page.pdf({
-      format: "A4",
-      printBackground: true,
-    })
-
-    await browser.close()
+    const pdfBuffer = await htmlPdf.generatePdf(file, options)
 
     res.set({
       "Content-Type": "application/pdf",
-      "Content-Length": pdf.length,
+      "Content-Length": pdfBuffer.length,
       "Content-Disposition": `attachment; filename=invoice-${order._id}.pdf`,
-    });
+    })
 
-    res.send(pdf);
+    res.send(pdfBuffer)
+
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error("Invoice error:", err)
+    res.status(500).json({ success: false, message: err.message })
   }
 }
 
@@ -391,7 +375,7 @@ exports.CancleOrder = async (req, res) => {
 
 
     for (const hostId of uniqueHost) {
-      
+
       const host = await User.findById(hostId)
 
       const Hostordercancell = hostOrderCancelledTemplate(host.name, user.name, orderId)

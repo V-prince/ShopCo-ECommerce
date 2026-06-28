@@ -335,9 +335,9 @@ export default function MyOrders() {
                       }
                       <div className="border-t mt-8 pt-6 flex gap-4 flex-wrap">
                         {
-                          order.orderStatus !== "cancelled" && <button onClick={() => window.open(`https://shopco-ecommerce-yael.onrender.com/api/products/invoice/${order._id}`)} className="bg-blue-600 text-white px-6 py-3 cursor-pointer rounded-lg font-medium">
+                          order.orderStatus !== "cancelled" && <a href={`https://shopco-ecommerce-yael.onrender.com/api/products/invoice/${order._id}`} className="bg-blue-600 text-white px-6 py-3 cursor-pointer rounded-lg font-medium">
                             Download Invoice
-                          </button>
+                          </a>
                         }
 
 
