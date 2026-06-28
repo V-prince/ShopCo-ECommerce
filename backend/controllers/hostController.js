@@ -3,6 +3,7 @@ const Order = require("../models/Order");
 const Product = require("../models/Product");
 const fs = require('fs')
 const cloudinary = require('../config/cloudinary')
+
 exports.addProduct = async (req, res) => {
 
     try {

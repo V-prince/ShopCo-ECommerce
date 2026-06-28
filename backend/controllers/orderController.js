@@ -315,10 +315,19 @@ exports.generateInvoice = async (req, res) => {
 
     const htmlContent = InovoiceTemplate(order)
 
-    const browser = await puppeteer.launch()
+    const browser = await puppeteer.launch({
+      headless: "new",
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+      ],
+    })
     const page = await browser.newPage()
 
-    await page.setContent(htmlContent)
+    await page.setContent(htmlContent, { waitUntil: "networkidle0" })
+
     const pdf = await page.pdf({
       format: "A4",
       printBackground: true,

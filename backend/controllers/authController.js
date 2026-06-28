@@ -2,6 +2,7 @@ const User = require("../models/User");
 const sendEmail = require("../utils/EmailSender");
 const bcrypt = require('bcryptjs');
 const resetOtpTempate = require('../utils/EmailTemplates/resetOtpVerificationTemplate')
+
 exports.SentEmailForForgotPassword = async (req, res) => {
   try {
 
