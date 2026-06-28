@@ -352,7 +352,7 @@ exports.generateInvoice = async (req, res) => {
     doc.fontSize(14).font('Helvetica-Bold').text('Order Items:')
     doc.moveDown(0.5)
 
-    order.orderItems.forEach((item, index) => {
+    order.products.forEach((item, index) => {
       doc.fontSize(12).font('Helvetica')
         .text(`${index + 1}. ${item.name}`)
         .text(`   Quantity: ${item.quantity}   Price: ₹${item.price}`, { indent: 20 })
@@ -371,7 +371,7 @@ exports.generateInvoice = async (req, res) => {
 
    
     doc.fontSize(12).font('Helvetica')
-      .text(`Payment Status: ${order.paymentInfo?.status || 'N/A'}`, { align: 'right' })
+      .text(`Payment Status: ${order.paymentStatus?.status || 'N/A'}`, { align: 'right' })
       .text(`Order Status: ${order.orderStatus}`, { align: 'right' })
 
     doc.moveDown(2)
