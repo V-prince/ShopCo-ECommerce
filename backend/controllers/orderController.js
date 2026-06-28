@@ -354,7 +354,7 @@ exports.generateInvoice = async (req, res) => {
 
     order.products.forEach((item, index) => {
       doc.fontSize(12).font('Helvetica')
-        .text(`${index + 1}. ${item.name}`)
+        .text(`${index + 1}. ${item.title}`)
         .text(`   Quantity: ${item.quantity}   Price: ₹${item.price}`, { indent: 20 })
       doc.moveDown(0.3)
     })
