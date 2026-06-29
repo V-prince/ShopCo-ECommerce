@@ -3,12 +3,29 @@ const Order = require("../models/Order");
 const Product = require("../models/Product");
 const fs = require('fs')
 const cloudinary = require('../config/cloudinary')
+const streamifier = require("streamifier");
+
+const uploadFromBuffer = (buffer) => {
+    return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+            {
+                folder: "shopco-product-images",
+            },
+            (error, result) => {
+                if (error) return reject(error);
+                resolve(result);
+            }
+        );
+
+        streamifier.createReadStream(buffer).pipe(stream);
+    });
+};
 
 exports.addProduct = async (req, res) => {
 
     try {
         const { title, description, price, discount } = req.body
-        
+
 
         if (!title ||
             !description ||
@@ -22,9 +39,7 @@ exports.addProduct = async (req, res) => {
 
         const variations = JSON.parse(req.body.variations)
 
-        const imageResult = await cloudinary.uploader.upload(req.file.path, {
-            folder: "shopco-product-images"
-        })
+        const imageResult = await uploadFromBuffer(req.file.buffer);
 
         const product = await Product.create({ hostId: req.user.id, title, description, price, discount, image: imageResult.secure_url, variations, soldCount: 0 });
 
