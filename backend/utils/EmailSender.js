@@ -1,45 +1,21 @@
-const brevo = require("@getbrevo/brevo");
+const { Resend } = require("resend");
 
-const apiInstance = new brevo.TransactionalEmailsApi();
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-apiInstance.setApiKey(
-  brevo.TransactionalEmailsApiApiKeys.apiKey,
-  process.env.BREVO_API_KEY
-);
 
-const EmailSender = async (to, subject, htmlContent) => {
-  try {
-    const email = new brevo.SendSmtpEmail();
+const EmailSender = async (to, sub, content) => {
+    try {
+        const data = await resend.emails.send({
+            from: "onboarding@resend.dev",
+            to: to,
+            subject: sub,
+            html: content,
+        });
 
-    email.sender = {
-      name: "Shop.co",
-      email: "shopcoinfos@gmail.com"
-    };
-
-    email.to = [
-      {
-        email: to
-      }
-    ];
-
-    email.subject = subject;
-    email.htmlContent = htmlContent;
-
-    const result = await apiInstance.sendTransacEmail(email);
-
-    console.log("Email Sent:", result);
-
-    return {
-      success: true
-    };
-  } catch (err) {
-    console.error(err);
-
-    return {
-      success: false,
-      error: err.message
-    };
-  }
+        console.log("Resend Response:", data);
+    } catch (error) {
+        console.log("Resend Error:", error);
+    }
 };
 
 module.exports = EmailSender;
