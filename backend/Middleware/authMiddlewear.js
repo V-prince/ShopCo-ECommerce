@@ -17,8 +17,6 @@ exports.Auth = (req, res, next) => {
       process.env.JWT_SECRET
     )
 
-    console.log("user hit the auth middleware", decode);
-
     req.user = decode;
     next();
 

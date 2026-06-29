@@ -266,7 +266,7 @@ exports.VerifyPayment = async (req, res) => {
     });
 
 
-    console.time("email")
+   
 
     const uniqueEmail = [...new Set(
       order.products.map(item => item.hostId.toString())
@@ -381,7 +381,7 @@ exports.generateInvoice = async (req, res) => {
     doc.end()
 
   } catch (err) {
-    console.error("Invoice error:", err.message)
+   
     res.status(500).json({ success: false, message: err.message })
   }
 }

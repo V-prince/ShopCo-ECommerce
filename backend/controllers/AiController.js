@@ -1,7 +1,7 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { extractProductId, getProductById } = require("../utils/AIChatbot/extractProductId");
 
-console.log("Gemini Key:", process.env.GEMINI_API_KEY?.slice(0, 10));
+
 
 const genAI = new GoogleGenerativeAI(
   process.env.GEMINI_API_KEY,

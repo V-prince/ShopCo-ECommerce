@@ -26,7 +26,6 @@ exports.addProduct = async (req, res) => {
     try {
         const { title, description, price, discount } = req.body
 
-
         if (!title ||
             !description ||
             !price ||
@@ -34,8 +33,6 @@ exports.addProduct = async (req, res) => {
             !req.body.variations) {
             return res.status(400).json({ message: "Please provide all fields" })
         }
-
-        console.log(req.file)
 
         const variations = JSON.parse(req.body.variations)
 

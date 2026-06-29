@@ -11,8 +11,6 @@ const EmailSender = async (to, sub, content) => {
             subject: sub,
             html: content,
         });
-
-        console.log("Resend Response:", data);
     } catch (error) {
         console.log("Resend Error:", error);
     }
