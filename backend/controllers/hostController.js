@@ -8,20 +8,28 @@ exports.addProduct = async (req, res) => {
 
     try {
         const { title, description, price, discount } = req.body
+        
 
-        if (!req.body && !req.file) {
+        if (!title ||
+            !description ||
+            !price ||
+            !req.file ||
+            !req.body.variations) {
             return res.status(400).json({ message: "Please provide all fields" })
         }
+
+        console.log(req.file)
+
         const variations = JSON.parse(req.body.variations)
 
-        const imageResult = await cloudinary.uploader.upload(req.file.path,{
-            folder:"shopco-product-images"
+        const imageResult = await cloudinary.uploader.upload(req.file.path, {
+            folder: "shopco-product-images"
         })
 
-        const product = await Product.create({ hostId: req.user.id, title, description, price, discount, image:imageResult.secure_url, variations, soldCount: 0 });
+        const product = await Product.create({ hostId: req.user.id, title, description, price, discount, image: imageResult.secure_url, variations, soldCount: 0 });
 
         res.status(201).json({ message: 'Product added successfully' });
-        
+
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
