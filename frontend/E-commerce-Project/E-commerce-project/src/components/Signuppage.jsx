@@ -16,7 +16,7 @@ export const Signuppage = () => {
     const [image, setimage] = useState("");
     const [role, setrole] = useState("user");
     const [error, setError] = useState({})
-    const navigate =  useNavigate()
+    const navigate = useNavigate()
 
     const handleonRagister = async (e) => {
         e.preventDefault();
@@ -43,8 +43,9 @@ export const Signuppage = () => {
                         setError(fieldError)
                     }
                     else {
-                        toast.error(data.msg)
+                        toast.error(data.message)
                     }
+
                     return
                 }
                 if (data.success) {
