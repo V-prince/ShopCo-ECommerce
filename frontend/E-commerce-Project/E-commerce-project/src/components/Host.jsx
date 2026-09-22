@@ -52,7 +52,6 @@ export default function HostPage() {
 
 
   const handleVariationChange = (index, field, value) => {
-
     const updatedVariations = [...variations];
     updatedVariations[index][field] = value;
     setVariations(updatedVariations);
@@ -81,7 +80,6 @@ export default function HostPage() {
     );
 
     setVariations(filtered);
-
   };
 
 
@@ -115,9 +113,6 @@ export default function HostPage() {
     formData.append("image", imageUrl);
     formData.append("variations", JSON.stringify(variations));
 
-    console.log("formData", formData.get("title"));
-    console.log("id", id)
-
     if (!id) {
       const data = await HostAddDataTOServer(formData);
     }
@@ -136,10 +131,6 @@ export default function HostPage() {
       stock: ""
     }])
   };
-
-
-
-
 
 
   return (

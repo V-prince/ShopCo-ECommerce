@@ -24,7 +24,7 @@ export const AllDataComesFromServer = async () => {
 export const FetchOneDataFromServer = async (id) => {
     const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/products/${id}`);
     const result = await res.json();
-    console.log("result:", result)
+  
     const data = {
         id: result.product._id,
         title: result.product.title,
@@ -130,7 +130,7 @@ export const LoginPageDataSendToServer = async (LoginData) => {
         body: JSON.stringify(LoginData)
     })
     const data = await res.json();
-    console.log("LoginData", data);
+    
     return data
 }
 
@@ -143,7 +143,7 @@ export const verifyOtpForLogin = async (email, otp) => {
         body: JSON.stringify({ email, otp })
     })
     const data = await res.json({});
-    console.log("LoginData", data);
+    
     return data
 }
 
@@ -171,7 +171,7 @@ export const HostDeleteDataFromServer = async (id) => {
         },
     })
     const data = await res.json();
-    console.log("deleteData", data.product);
+  
     return data;
 }
 
@@ -185,7 +185,7 @@ export const FetchAllMyProducts = async (filter) => {
         }
     })
     const data = await res.json()
-    console.log(data)
+    
     return data
 }
 
@@ -228,7 +228,7 @@ export const razorpayCreateOrder = async () => {
 
 
 export const razorpayVerifyPayment = async (orderData) => {
-    console.log("OrderData", orderData);
+  
     const token = localStorage.getItem("token");
     const res = await fetch(`https://shopco-ecommerce-yael.onrender.com/api/products/razorpay/verify/payment`, {
         method: "POST",
@@ -250,7 +250,6 @@ export const getUserOrders = async () => {
         }
     })
     const data = await res.json();
-    console.log("MyOrders", data);
     return data;
 }
 

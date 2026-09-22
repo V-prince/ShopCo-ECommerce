@@ -16,7 +16,7 @@ export const Signuppage = () => {
     const [image, setimage] = useState("");
     const [role, setrole] = useState("user");
     const [error, setError] = useState({})
-
+    const navigate =  useNavigate()
 
     const handleonRagister = async (e) => {
         e.preventDefault();
@@ -49,7 +49,7 @@ export const Signuppage = () => {
                 }
                 if (data.success) {
                     <Loading />
-                    window.location.href = "/login"
+                    navigate('/login')
                     toast.success(data.message, { position: "top-center" })
                 }
             }

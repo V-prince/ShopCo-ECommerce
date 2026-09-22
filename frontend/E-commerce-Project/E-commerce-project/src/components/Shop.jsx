@@ -110,7 +110,7 @@ export const Shop = () => {
 
 
             const data = await postAddRatingToDataBase(ratingData)
-            console.log(data)
+            
 
             if (!data.success) {
                 return toast.error(data.message)
@@ -135,7 +135,7 @@ export const Shop = () => {
     const ProductData = async () => {
         const data = await FetchOneDataFromServer(id)
         setfetchedItem(data)
-        console.log("selected", data)
+        
     }
 
     const getAllRatings = async () => {

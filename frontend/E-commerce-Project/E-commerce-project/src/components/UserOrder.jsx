@@ -154,15 +154,12 @@ export default function MyOrders() {
 
                       <div className="grid lg:grid-cols-4 gap-6">
 
-
                         <div>
-
                           <img
                             src={product.image}
                             alt={product.title}
                             className="w-40 h-40 object-cover rounded-lg mx-auto shadow-2xl"
                           />
-
                         </div>
 
                         <div className="lg:col-span-2">

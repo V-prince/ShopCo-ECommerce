@@ -18,7 +18,7 @@ export const Cartcard = ({ item,FetchAllCart }) => {
         }
         const counterdata = await IncrementAndDecrementCounterFromCart(item.id,newCounter)
 
-        console.log("counterdata",counterdata);
+       
         await FetchAllCart()
     }
 

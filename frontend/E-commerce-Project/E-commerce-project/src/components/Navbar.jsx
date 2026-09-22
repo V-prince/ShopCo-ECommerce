@@ -23,6 +23,7 @@ export const Navbar = () => {
     const dispatch = useDispatch();
 
     const cartItems = useSelector((state) => state.Shopitem.selecteditem);
+
     const user = useSelector((state) => state.Shopdata.user);
 
     const handleSearchChange = async (e) => {
@@ -42,6 +43,7 @@ export const Navbar = () => {
         }, 300);
 
         const user = JSON.parse(localStorage.getItem("user"))
+        
         dispatch(ShopItemsAction.setUser(user))
 
         return () => clearTimeout(timer);
