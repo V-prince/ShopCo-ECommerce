@@ -7,7 +7,7 @@ const EmailSender = async (to, sub, content) => {
 
     try {
 
-        await fetch("https://api.brevo.com/v3/smtp/email", {
+        const res = await fetch("https://api.brevo.com/v3/smtp/email", {
             method: "POST",
             headers: {
                 "api-key": process.env.BREVO_API_KEY,
@@ -27,6 +27,19 @@ const EmailSender = async (to, sub, content) => {
                 htmlContent: content
             })
         });
+
+        const data = await res.json();
+
+        console.log("Brevo Status:", res.status);
+        console.log("Brevo Response:", data);
+
+        if (!res.ok) {
+            console.log("Brevo Error:", data);
+            return;
+        }
+
+        console.log("Email Sent:", data);
+
 
     } catch (error) {
         console.log("Resend Error:", error);
