@@ -15,7 +15,7 @@ const EmailSender = async (to, sub, content) => {
             },
             body: JSON.stringify({
                 sender: {
-                    email: "vadherprince63@email.com",
+                    email: "vadherprince63@gmail.com",
                     name: "ShopCo"
                 },
                 to: [
