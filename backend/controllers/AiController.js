@@ -12,7 +12,7 @@ exports.chatwithAi = async (req, res) => {
 
     const message = req.body.message;
     const lowerMsg = message.toLowerCase()
-    
+
     if (lowerMsg.includes("refund")) {
       return res.status(200).json({
         success: true,
@@ -33,7 +33,7 @@ exports.chatwithAi = async (req, res) => {
       const orderId = extractProductId(message)
       if (orderId) {
         const order = await getProductById(orderId);
-        contextData = order ? `Order Data:\n- Order ID: ${order._id}\n- Status: ${order.orderStatus}\n- ${!order.orderStatus.includes("confirmed") ? "Expected Delivery: 5-7 days" : ""}  || "N/A"}` : "Order Data: No order found with this ID.";
+        contextData = order ? `Order Data:\n- Order ID: ${order._id}\n- Status: ${order.orderStatus}\n- ${!order.orderStatus.includes("deliverd") ? "Expected Delivery: 5-7 days" : ""}  || "N/A"}` : "Order Data: No order found with this ID.";
       }
 
     }

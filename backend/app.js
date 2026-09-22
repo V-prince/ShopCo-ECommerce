@@ -1,10 +1,10 @@
 const env = require('dotenv').config()
 const express = require('express');
 const cors = require('cors');
-const { hostRouter } = require('./routers/hostRouter');
 const mongoose = require('mongoose');
 const path = require('path')
 const multer = require('multer');
+const { hostRouter } = require('./routers/hostRouter');
 const rootDirectry = require('./utils/rootDirectry');
 const { userRouter } = require('./routers/userRouter');
 const { orderRouter } = require('./routers/orderRouter');
