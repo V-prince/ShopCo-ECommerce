@@ -43,9 +43,9 @@ export const Signuppage = () => {
                         setError(fieldError)
                     }
                     else {
+                        console.log(data.message)
                         toast.error(data.message)
                     }
-
                     return
                 }
                 if (data.success) {
